@@ -11,6 +11,7 @@ import { Container } from "@/components/ui/Container";
 import { TextLink } from "@/components/ui/TextLink";
 import { getProject, projects } from "@/content/projects";
 import { categoryLabels, statusLabels } from "@/content/types";
+import { pageMetadata } from "@/lib/metadata";
 
 /** Every case study is prerendered at build time; unknown slugs reach notFound(). */
 export function generateStaticParams() {
@@ -23,17 +24,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
-  return {
+  return pageMetadata({
     title: project.title,
     description: project.summary,
-    alternates: { canonical: `/projects/${project.slug}` },
-    openGraph: {
-      type: "article",
-      title: project.title,
-      description: project.summary,
-      url: `/projects/${project.slug}`,
-    },
-  };
+    path: `/projects/${project.slug}`,
+    type: "article",
+    image: "own",
+  });
 }
 
 export default async function ProjectPage({

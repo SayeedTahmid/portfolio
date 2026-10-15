@@ -10,12 +10,13 @@ import portrait from "@/content/images/portrait.jpg";
 import { aboutFull, activities, education } from "@/content/profile";
 import { site } from "@/content/site";
 import { skillGroups } from "@/content/skills";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description: `About ${site.name}: Computer Science and Engineering student at North South University working across software engineering and machine-learning research.`,
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 function SubSection({
   id,

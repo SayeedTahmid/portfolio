@@ -3,13 +3,14 @@ import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Container } from "@/components/ui/Container";
 import { getProjectsByCategory, projects } from "@/content/projects";
 import { categoryLabels, categoryOrder } from "@/content/types";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Projects",
   description:
     "Software, machine-learning research and embedded projects by Syed Tahmid Manzoor, each with a case study.",
-  alternates: { canonical: "/projects" },
-};
+  path: "/projects",
+});
 
 /** All projects, grouped by category. With fewer than ~10 projects, grouping beats a filter UI. */
 export default function ProjectsPage() {
