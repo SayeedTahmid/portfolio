@@ -38,6 +38,12 @@ export default function ProjectsPage() {
           </ul>
         </nav>
 
+        {projects.length === 0 ? (
+          <p className="mt-14 text-fg-muted">
+            No projects are published yet. Check back soon.
+          </p>
+        ) : null}
+
         <div className="mt-14 space-y-20">
           {categoryOrder.map((category) => {
             const group = getProjectsByCategory(category);

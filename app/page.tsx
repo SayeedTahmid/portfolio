@@ -4,6 +4,7 @@ import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { Hero } from "@/components/home/Hero";
 import { Strengths } from "@/components/home/Strengths";
 import { education } from "@/content/profile";
+import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -39,9 +40,11 @@ export default function HomePage() {
     <>
       <PersonJsonLd />
       <Hero />
-      <div className="border-t border-line">
-        <FeaturedProjects />
-      </div>
+      {projects.length > 0 ? (
+        <div className="border-t border-line">
+          <FeaturedProjects />
+        </div>
+      ) : null}
       <div className="border-t border-line bg-surface">
         <Strengths />
       </div>

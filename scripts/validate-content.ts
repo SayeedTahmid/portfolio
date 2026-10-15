@@ -6,9 +6,13 @@
  * Errors fail the run. Warnings flag information still waiting for confirmation;
  * the site omits those fields rather than guessing.
  */
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { featuredSlugs, projects } from "../content/projects.ts";
+import { projects } from "../content/projects.ts";
+import {
+  projectFolders,
+  projectModules,
+} from "../content/projects/index.generated.ts";
 import type { Project } from "../content/types.ts";
 
 const PUBLIC_DIR = join(import.meta.dirname, "..", "public");
@@ -113,7 +117,7 @@ for (const project of projects) {
       (actual.width !== image.width || actual.height !== image.height)
     ) {
       errors.push(
-        `${slug}: ${where} is ${actual.width}x${actual.height} but declared as ${image.width}x${image.height}`,
+        `${slug}: ${where} is ${actual.width}x${actual.height} pixels; set width: ${actual.width}, height: ${actual.height}`,
       );
     }
   }
@@ -125,14 +129,59 @@ for (const project of projects) {
   }
 }
 
-for (const slug of featuredSlugs) {
-  if (!slugs.has(slug))
-    errors.push(`featuredSlugs lists "${slug}", which is not a project`);
+// Each project's slug must match its folder name, so the folder *is* the project.
+projectModules.forEach((project, i) => {
+  const folder = projectFolders[i];
+  if (folder && project.slug !== folder) {
+    errors.push(
+      `content/projects/${folder}/project.ts: slug is "${project.slug}" but must match the folder name "${folder}"`,
+    );
+  }
+});
+
+// Homepage positions: unique, at most four.
+const positions = projects.flatMap((p) =>
+  p.featured === undefined ? [] : [[p.featured, p.slug] as const],
+);
+const seenPositions = new Map<number, string>();
+for (const [position, slug] of positions) {
+  const other = seenPositions.get(position);
+  if (other) {
+    errors.push(`${slug} and ${other} both use featured: ${position}`);
+  }
+  seenPositions.set(position, slug);
 }
-if (featuredSlugs.length < 2 || featuredSlugs.length > 4) {
-  errors.push(
-    `feature 2–4 projects on the home page (currently ${featuredSlugs.length})`,
+if (projects.length > 0 && positions.length === 0) {
+  warnings.push(
+    "no project has `featured`; the homepage shows the four newest projects",
   );
+}
+
+// Image folders left behind after deleting a project.
+const imagesRoot = join(PUBLIC_DIR, "projects");
+if (existsSync(imagesRoot)) {
+  for (const dir of readdirSync(imagesRoot)) {
+    if (!slugs.has(dir) && statSync(join(imagesRoot, dir)).isDirectory()) {
+      warnings.push(
+        `public/projects/${dir}/ has no matching project; delete it if the project was removed`,
+      );
+    }
+  }
+}
+
+// Profile photo: optional, but keep it a reasonable size.
+for (const ext of ["jpg", "jpeg", "png", "webp", "avif"]) {
+  const photo = join(
+    import.meta.dirname,
+    "..",
+    "content",
+    `profile-photo.${ext}`,
+  );
+  if (existsSync(photo) && statSync(photo).size > 5 * 1024 * 1024) {
+    warnings.push(
+      `content/profile-photo.${ext} is over 5 MB; a 1000-pixel-wide JPEG is plenty`,
+    );
+  }
 }
 
 for (const warning of warnings) console.warn(`warning  ${warning}`);

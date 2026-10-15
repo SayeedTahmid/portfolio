@@ -18,21 +18,21 @@ Then confirm the personal details below are final.
 
 ### Where personal details live
 
-| What                                                            | File                                           | Field                                            |
-| --------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------ |
-| Name, role label, location                                      | `content/site.ts`                              | `name`, `role`, `location`                       |
-| Hero headline and description (currently your placeholder copy) | `content/site.ts`                              | `headline`, `description`                        |
-| Share-preview / meta description                                | `content/site.ts`                              | `positioning`                                    |
-| Email, GitHub, LinkedIn                                         | `content/site.ts`                              | `email`, `links.github`, `links.linkedin`        |
-| Résumé PDF                                                      | `public/syed-tahmid-manzoor-resume.pdf`        | replace the file; the link is `site.resume.href` |
-| Portrait                                                        | `content/images/portrait.jpg`                  | replace the file (keep the name)                 |
-| About text                                                      | `content/profile.ts`                           | `aboutPreview`, `aboutFull`                      |
-| Education, activities                                           | `content/profile.ts`                           | `education`, `activities`                        |
-| Skills                                                          | `content/skills.ts`                            | `skillGroups`                                    |
-| Projects and case studies                                       | `content/projects.ts`, `content/case-studies/` | see `docs/ADDING-A-PROJECT.md`                   |
-| Homepage project selection                                      | `content/projects.ts`                          | `featuredSlugs`                                  |
-| "No screenshot yet" panels                                      | `content/site.ts`                              | `showMediaPlaceholders`                          |
-| Canonical domain                                                | Vercel environment variable                    | `NEXT_PUBLIC_SITE_URL` (section 4)               |
+| What                                                            | File                                    | Field                                                            |
+| --------------------------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------- |
+| Name, role label, location                                      | `content/site.ts`                       | `name`, `role`, `location`                                       |
+| Hero headline and description (currently your placeholder copy) | `content/site.ts`                       | `headline`, `description`                                        |
+| Share-preview / meta description                                | `content/site.ts`                       | `positioning`                                                    |
+| Email, GitHub, LinkedIn                                         | `content/site.ts`                       | `email`, `links.github`, `links.linkedin`                        |
+| Résumé PDF                                                      | `public/syed-tahmid-manzoor-resume.pdf` | replace the file; the link is `site.resume.href`                 |
+| Profile photo                                                   | `content/profile-photo.jpg`             | add, replace or delete the file (see `docs/MANAGING-CONTENT.md`) |
+| About text                                                      | `content/profile.ts`                    | `aboutPreview`, `aboutFull`                                      |
+| Education, activities                                           | `content/profile.ts`                    | `education`, `activities`                                        |
+| Skills                                                          | `content/skills.ts`                     | `skillGroups`                                                    |
+| Projects and case studies                                       | `content/projects/<slug>/`              | one folder per project (see `docs/MANAGING-CONTENT.md`)          |
+| Homepage project selection                                      | each project's `project.ts`             | `featured: 1` to `4`                                             |
+| "No screenshot yet" panels                                      | `content/site.ts`                       | `showMediaPlaceholders`                                          |
+| Canonical domain                                                | Vercel environment variable             | `NEXT_PUBLIC_SITE_URL` (section 4)                               |
 
 ## 2. Environment variables
 

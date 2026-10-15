@@ -1,4 +1,4 @@
-import type { CaseStudy } from "../types.ts";
+import type { CaseStudy } from "../../types.ts";
 
 /*
  * Sources for every statement below, all in

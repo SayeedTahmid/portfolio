@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { FileText } from "lucide-react";
+import {
+  hasProfilePhoto,
+  ProfilePhoto,
+} from "@/components/profile/ProfilePhoto";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { TechTagList } from "@/components/ui/TechTag";
 import { TextLink } from "@/components/ui/TextLink";
-import portrait from "@/content/images/portrait.jpg";
 import { aboutFull, activities, education } from "@/content/profile";
 import { site } from "@/content/site";
 import { skillGroups } from "@/content/skills";
+import { cx } from "@/lib/cx";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
@@ -44,7 +47,13 @@ export default function AboutPage() {
   return (
     <div className="pt-14 pb-16 sm:pt-20">
       <Container>
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_15rem] md:gap-14 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div
+          className={cx(
+            "grid gap-10",
+            hasProfilePhoto &&
+              "md:grid-cols-[minmax(0,1fr)_15rem] md:gap-14 lg:grid-cols-[minmax(0,1fr)_18rem]",
+          )}
+        >
           <div>
             <h1 className="text-hero font-semibold tracking-tight text-fg">
               About
@@ -68,13 +77,10 @@ export default function AboutPage() {
               </ButtonLink>
             </div>
           </div>
-          <Image
-            src={portrait}
-            alt={`Portrait of ${site.name}`}
+          <ProfilePhoto
             sizes="(min-width: 1024px) 18rem, (min-width: 768px) 15rem, 12rem"
-            placeholder="blur"
             priority
-            className="order-first w-48 rounded-lg border border-line md:order-none md:w-full"
+            className="order-first w-48 md:order-none md:w-full"
           />
         </div>
 

@@ -15,6 +15,9 @@ import { pageMetadata } from "@/lib/metadata";
 
 /** Every case study is prerendered at build time; unknown slugs reach notFound(). */
 export function generateStaticParams() {
+  // Cache Components needs at least one param; with no projects, a placeholder
+  // slug is prerendered and simply resolves to the 404 page.
+  if (projects.length === 0) return [{ slug: "no-projects" }];
   return projects.map((project) => ({ slug: project.slug }));
 }
 

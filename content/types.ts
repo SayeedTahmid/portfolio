@@ -148,6 +148,11 @@ export type Project = {
   availabilityNote?: string;
   /** Documents the summary, highlights and metrics were drawn from. */
   evidence: readonly Source[];
+  /**
+   * Position on the homepage (1 = first). Up to four projects; leave it out to keep
+   * a project off the homepage. With none featured, the four newest are shown.
+   */
+  featured?: 1 | 2 | 3 | 4;
   /** Card thumbnail and the lead image on the case-study page. */
   image?: ProjectImage;
   caseStudy?: CaseStudy;

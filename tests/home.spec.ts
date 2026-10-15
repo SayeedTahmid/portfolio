@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { getFeaturedProjects, projects } from "../content/projects.ts";
 
 test.describe("homepage", () => {
   test("has one h1 and the expected sections in order", async ({ page }) => {
@@ -13,7 +14,7 @@ test.describe("homepage", () => {
     );
     expect(labels).toEqual([
       "Building useful software. Exploring intelligent systems.",
-      "Selected projects",
+      ...(projects.length > 0 ? ["Selected projects"] : []),
       "Technical strengths",
       "About me",
       "Get in touch",
@@ -25,7 +26,7 @@ test.describe("homepage", () => {
     const cards = page.locator(
       'section[aria-labelledby="featured-heading"] article',
     );
-    await expect(cards).toHaveCount(4);
+    await expect(cards).toHaveCount(getFeaturedProjects().length);
     const hrefs = await cards
       .locator("h3 a")
       .evaluateAll((links) => links.map((a) => a.getAttribute("href")));
@@ -58,7 +59,6 @@ test.describe("homepage", () => {
     const alts = await page
       .locator("main img")
       .evaluateAll((imgs) => imgs.map((img) => img.getAttribute("alt")));
-    expect(alts.length).toBeGreaterThan(0);
     for (const alt of alts) expect(alt?.trim().length ?? 0).toBeGreaterThan(10);
   });
 

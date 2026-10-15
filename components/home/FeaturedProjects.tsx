@@ -6,6 +6,7 @@ import { getFeaturedProjects, projects } from "@/content/projects";
 
 export function FeaturedProjects() {
   const featured = getFeaturedProjects();
+  if (featured.length === 0) return null;
 
   return (
     <section aria-labelledby="featured-heading" className="py-16 sm:py-24">

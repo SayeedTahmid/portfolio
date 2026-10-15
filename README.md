@@ -4,7 +4,7 @@ Personal portfolio site: homepage, project index, case studies and an About page
 Static Next.js App Router site, deployed on Vercel.
 
 - **Deploying:** [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) (Vercel setup, custom domain, verification, launch checklist)
-- **Adding a project:** [`docs/ADDING-A-PROJECT.md`](docs/ADDING-A-PROJECT.md)
+- **Adding or removing projects and your photo:** [`docs/MANAGING-CONTENT.md`](docs/MANAGING-CONTENT.md)
 
 ## Stack
 
@@ -46,10 +46,11 @@ Individual steps: `npm run typecheck`, `npm run lint`, `npm run format`,
 app/                  routes, root layout, design tokens (globals.css), metadata files
   projects/[slug]/    case-study pages and their share images
 components/           layout, theme, home sections, project cards, case-study parts, UI primitives
-content/              all site content: identity, projects, case studies, skills, profile, images
+content/              all site content: identity, profile photo, skills, profile text
+  projects/<slug>/    one folder per project (project.ts, optional case-study.ts); _template to copy
 lib/                  fonts, theme script, site URL, metadata helper, share-image renderer
 public/               résumé PDF and project images
-scripts/              contrast checker and content validator (run with Node directly)
+scripts/              content index generator, contrast checker, content validator (Node, no build step)
 tests/                Playwright suites
 proxy.ts              returns a real 404 for unknown project URLs
 docs/                 deployment and content guides

@@ -1,21 +1,27 @@
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import {
+  hasProfilePhoto,
+  ProfilePhoto,
+} from "@/components/profile/ProfilePhoto";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { aboutPreview } from "@/content/profile";
-import { site } from "@/content/site";
-import portrait from "@/content/images/portrait.jpg";
+import { cx } from "@/lib/cx";
 
 export function AboutPreview() {
   return (
     <section aria-labelledby="about-heading" className="py-16 sm:py-24">
-      <Container className="grid gap-10 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-14 lg:grid-cols-[16rem_minmax(0,1fr)]">
-        <Image
-          src={portrait}
-          alt={`Portrait of ${site.name}`}
+      <Container
+        className={cx(
+          "grid gap-10",
+          // Two columns only when there is a photo to show.
+          hasProfilePhoto &&
+            "md:grid-cols-[13rem_minmax(0,1fr)] md:gap-14 lg:grid-cols-[16rem_minmax(0,1fr)]",
+        )}
+      >
+        <ProfilePhoto
           sizes="(min-width: 1024px) 16rem, (min-width: 768px) 13rem, 10rem"
-          placeholder="blur"
-          className="w-40 rounded-lg border border-line md:w-full"
+          className="w-40 md:w-full"
         />
         <div>
           <h2
