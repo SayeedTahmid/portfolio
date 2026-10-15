@@ -23,7 +23,7 @@ export function CodeBlock({
       tabIndex={0}
       aria-label={label}
       className={cx(
-        "overflow-x-auto rounded-sm bg-raised p-4 font-mono text-sm leading-relaxed text-fg",
+        "overflow-x-auto rounded-md border border-line bg-surface p-4 font-mono text-sm leading-relaxed text-fg",
         className,
       )}
     >

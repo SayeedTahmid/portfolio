@@ -6,9 +6,9 @@
  * Errors fail the run. Warnings flag information still waiting for confirmation;
  * the site omits those fields rather than guessing.
  */
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { projects } from "../content/projects.ts";
+import { featuredSlugs, projects } from "../content/projects.ts";
 import type { Project } from "../content/types.ts";
 
 const PUBLIC_DIR = join(import.meta.dirname, "..", "public");
@@ -25,6 +25,31 @@ function checkHref(project: Project, where: string, href: string) {
   } else if (!href.startsWith("https://")) {
     errors.push(`${project.slug}: ${where} must use https:// (got ${href})`);
   }
+}
+
+/** Pixel size of a PNG or JPEG file, read from its header. */
+function imageSize(path: string): { width: number; height: number } | null {
+  const b = readFileSync(path);
+  if (b.readUInt32BE(0) === 0x89504e47) {
+    return { width: b.readUInt32BE(16), height: b.readUInt32BE(20) };
+  }
+  if (b[0] === 0xff && b[1] === 0xd8) {
+    let i = 2;
+    while (i < b.length) {
+      if (b[i] !== 0xff) return null;
+      const marker = b[i + 1] ?? 0;
+      const length = b.readUInt16BE(i + 2);
+      if (
+        marker >= 0xc0 &&
+        marker <= 0xcf &&
+        ![0xc4, 0xc8, 0xcc].includes(marker)
+      ) {
+        return { width: b.readUInt16BE(i + 7), height: b.readUInt16BE(i + 5) };
+      }
+      i += 2 + length;
+    }
+  }
+  return null;
 }
 
 const slugs = new Set<string>();
@@ -71,8 +96,20 @@ for (const project of projects) {
     );
   }
   if (project.image) {
-    checkHref(project, "image", project.image.src);
-    if (!project.image.alt.trim()) errors.push(`${slug}: image needs alt text`);
+    const { src, width, height, alt } = project.image;
+    checkHref(project, "image", src);
+    if (alt.trim().length < 20) {
+      errors.push(
+        `${slug}: image alt text should describe what the image shows`,
+      );
+    }
+    const file = join(PUBLIC_DIR, src);
+    const actual = existsSync(file) ? imageSize(file) : null;
+    if (actual && (actual.width !== width || actual.height !== height)) {
+      errors.push(
+        `${slug}: image is ${actual.width}x${actual.height} but declared as ${width}x${height}`,
+      );
+    }
   }
 
   if (!project.team)
@@ -82,9 +119,15 @@ for (const project of projects) {
   }
 }
 
-const featured = projects.filter((p) => p.featured).length;
-if (featured < 2 || featured > 3)
-  errors.push(`feature 2–3 projects on the home page (currently ${featured})`);
+for (const slug of featuredSlugs) {
+  if (!slugs.has(slug))
+    errors.push(`featuredSlugs lists "${slug}", which is not a project`);
+}
+if (featuredSlugs.length < 2 || featuredSlugs.length > 4) {
+  errors.push(
+    `feature 2–4 projects on the home page (currently ${featuredSlugs.length})`,
+  );
+}
 
 for (const warning of warnings) console.warn(`warning  ${warning}`);
 for (const error of errors) console.error(`error    ${error}`);

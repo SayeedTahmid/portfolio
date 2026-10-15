@@ -7,9 +7,7 @@ export const metadata: Metadata = { title: "Projects" };
 export default function ProjectsPage() {
   return (
     <Container className="py-16">
-      <h1 className="text-3xl font-semibold tracking-[-0.02em] font-stretch-85%">
-        Projects
-      </h1>
+      <h1 className="text-hero font-semibold tracking-tight">Projects</h1>
     </Container>
   );
 }

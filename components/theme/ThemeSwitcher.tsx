@@ -50,13 +50,13 @@ export function ThemeSwitcher() {
   const groupName = useId();
 
   return (
-    <fieldset className="flex items-center gap-0.5 rounded-sm border border-line-strong p-0.5">
-      <legend className="sr-only">Color theme</legend>
+    <fieldset className="flex items-center gap-0.5 rounded-sm border border-line-control bg-surface p-0.5">
+      <legend className="sr-only">Theme</legend>
       {options.map(({ value, label, Icon }) => (
         <label
           key={value}
-          title={label}
-          className="grid size-8 cursor-pointer place-items-center rounded-[3px] text-fg-muted transition-colors hover:text-fg has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus"
+          title={`${label} theme`}
+          className="grid size-8 cursor-pointer place-items-center rounded-[4px] text-fg-muted transition-colors duration-150 hover:bg-soft hover:text-fg has-[:checked]:bg-btn has-[:checked]:text-on-btn has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus"
         >
           <input
             type="radio"

@@ -51,7 +51,10 @@ test.describe("theme", () => {
     await page.goto("/");
     if (isMobile) await page.getByRole("button", { name: "Menu" }).click();
     // Click the visible icon label, as a person would; the radio input itself is visually hidden.
-    await page.locator('label[title="Dark"]').locator("visible=true").click();
+    await page
+      .locator('label[title="Dark theme"]')
+      .locator("visible=true")
+      .click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await expect(
       page.getByRole("radio", { name: "Dark" }).locator("visible=true"),

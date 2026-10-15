@@ -43,7 +43,6 @@ export const projects: readonly Project[] = [
         href: github("SAILOR_Longitudinal_Research"),
       },
     ],
-    featured: true,
   },
   {
     slug: "pediatric-brain-tumor-segmentation",
@@ -169,6 +168,12 @@ export const projects: readonly Project[] = [
         label: "Source code",
       },
     ],
+    image: {
+      src: "/projects/crowd-action-detection/gradio-demo-dancing.png",
+      width: 1352,
+      height: 536,
+      alt: "The Gradio demo after a festival dance clip is uploaded: the video on the left, and on the right the prediction “dancing” at 62%, with walking at 21% and fighting at 17%.",
+    },
     evidence: [
       resume,
       {
@@ -176,7 +181,6 @@ export const projects: readonly Project[] = [
         href: github("Crowd-action-detection-VLM"),
       },
     ],
-    featured: true,
   },
   {
     slug: "multi-tenant-crm",
@@ -218,7 +222,6 @@ export const projects: readonly Project[] = [
         href: github("CRMS_Junior_Project_CSE299"),
       },
     ],
-    featured: true,
   },
   {
     slug: "os-algorithm-simulator",
@@ -267,6 +270,12 @@ export const projects: readonly Project[] = [
         label: "Source code",
       },
     ],
+    image: {
+      src: "/projects/used-clothing-marketplace/cascade-delete-test.png",
+      width: 888,
+      height: 338,
+      alt: "MySQL Workbench test: deleting category 40, then selecting clothes in that category returns an empty result, confirming the cascading delete.",
+    },
     evidence: [
       {
         label: "Used-Cloth-Marketplace-DBMS repository",
@@ -321,8 +330,19 @@ export function getProject(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
 
+/** Projects shown on the home page, in this order. Change the slugs to change the selection. */
+export const featuredSlugs = [
+  "multi-tenant-crm",
+  "pediatric-brain-tumor-segmentation",
+  "crowd-action-detection",
+  "used-clothing-marketplace",
+] as const;
+
 export function getFeaturedProjects(): Project[] {
-  return projects.filter((project) => project.featured);
+  return featuredSlugs.flatMap((slug) => {
+    const project = getProject(slug);
+    return project ? [project] : [];
+  });
 }
 
 export function getProjectsByCategory(category: ProjectCategory): Project[] {

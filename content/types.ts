@@ -61,11 +61,19 @@ export type ProjectLink = {
 };
 
 export type ProjectImage = {
-  /** Path under /public. */
+  /** Path under /public. Only real screenshots, diagrams or results from the project itself. */
   src: `/projects/${string}`;
+  /** Intrinsic pixel size of the file (checked by the content validator). */
   width: number;
   height: number;
+  /** Describe what the image shows and why it matters, not just "screenshot". */
   alt: string;
+  caption?: string;
+  /**
+   * "contain" (default) shows the whole image, letterboxed if needed; right for
+   * diagrams, charts and UI screenshots. "cover" fills the frame and may crop.
+   */
+  fit?: "contain" | "cover";
 };
 
 export type Project = {
@@ -91,6 +99,5 @@ export type Project = {
   availabilityNote?: string;
   /** Documents the summary, highlights and metrics were drawn from. */
   evidence: readonly Source[];
-  featured?: boolean;
   image?: ProjectImage;
 };
