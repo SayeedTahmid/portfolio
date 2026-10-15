@@ -1,1 +1,194 @@
 @import "tailwindcss";
+
+/*
+ * Design tokens
+ * ------------------------------------------------------------------
+ * Layer 1, primitives: raw palette values. Defined as plain custom
+ *   properties (not @theme), so no utility like `bg-navy-600` exists and
+ *   components can't bypass the semantic layer.
+ * Layer 2, semantic tokens: what a colour is for. Redefined per theme.
+ * Layer 3, Tailwind mapping (@theme inline): exposes semantic tokens as
+ *   utilities such as bg-canvas, text-fg-muted, border-line.
+ *
+ * Contrast (WCAG 2.2, measured): every text pair is at least 6:1 in both
+ * themes. Powder blue is 1.5:1 on cool white, so it is never text in light
+ * mode. line-strong is at least 3:1 for control boundaries (1.4.11).
+ */
+
+/* The `dark:` variant follows the resolved theme on <html>, not only the OS. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------- Layer 1: primitives ---------- */
+:root {
+  --p-white: #ffffff;
+  --p-cloud-50: #f4f7fb; /* cool white */
+  --p-cloud-100: #e8eef6;
+  --p-cloud-200: #c9d6e6;
+  --p-powder-200: #b4cde6; /* powder blue (fills) */
+  --p-powder-300: #a8c6e5; /* powder blue (dark-mode text/links) */
+  --p-slate-400: #9cadc4;
+  --p-slate-500: #6e809b;
+  --p-slate-550: #5b7090;
+  --p-slate-600: #4a5a72;
+  --p-navy-600: #1d3d6e; /* navy */
+  --p-navy-800: #24364f;
+  --p-navy-900: #16243a;
+  --p-navy-925: #0f1a2c;
+  --p-navy-950: #09111e; /* blue-black */
+  --p-ink: #0e1b30;
+  --p-paper: #e4ecf6;
+}
+
+/* ---------- Layer 2: semantic tokens ---------- */
+:root {
+  color-scheme: light;
+  --canvas: var(--p-cloud-50); /* page background */
+  --surface: var(--p-white); /* cards, menus */
+  --raised: var(--p-cloud-100); /* subtle panels, code blocks */
+  --fg: var(--p-ink); /* body text            16.0:1 on canvas */
+  --fg-muted: var(--p-slate-600); /* secondary text        6.5:1 on canvas */
+  --primary: var(--p-navy-600); /* links, emphasis      10.1:1 on canvas */
+  --on-primary: var(--p-white); /* text on primary      10.8:1 */
+  --accent: var(--p-powder-200); /* fills only, never text */
+  --line: var(--p-cloud-200); /* decorative hairlines */
+  --line-strong: var(--p-slate-500); /* control boundaries   3.7:1 on canvas */
+  --focus: var(--p-navy-600); /* focus ring           10.1:1 on canvas */
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: var(--p-navy-950);
+  --surface: var(--p-navy-925);
+  --raised: var(--p-navy-900);
+  --fg: var(--p-paper); /*                      15.9:1 on canvas */
+  --fg-muted: var(--p-slate-400); /*                       8.3:1 on canvas */
+  --primary: var(--p-powder-300); /*                      10.7:1 on canvas */
+  --on-primary: var(--p-navy-950); /*                      10.7:1 */
+  --accent: var(--p-navy-600);
+  --line: var(--p-navy-800);
+  --line-strong: var(--p-slate-550); /*                       3.7:1 on canvas */
+  --focus: var(--p-powder-300);
+}
+
+/* No JavaScript: the theme script never ran, so follow the OS setting. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --canvas: var(--p-navy-950);
+    --surface: var(--p-navy-925);
+    --raised: var(--p-navy-900);
+    --fg: var(--p-paper);
+    --fg-muted: var(--p-slate-400);
+    --primary: var(--p-powder-300);
+    --on-primary: var(--p-navy-950);
+    --accent: var(--p-navy-600);
+    --line: var(--p-navy-800);
+    --line-strong: var(--p-slate-550);
+    --focus: var(--p-powder-300);
+  }
+}
+
+/* ---------- Layer 3: Tailwind mapping ---------- */
+@theme inline {
+  /* Only semantic colours exist as utilities. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-focus: var(--focus);
+
+  --font-*: initial;
+  --font-sans:
+    var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme {
+  /* Type scale: the classic scale (12 14 16 18 21 24 36 48), plus a fluid display size. */
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6;
+  --text-md: 1.125rem;
+  --text-md--line-height: 1.6;
+  --text-lg: 1.3125rem;
+  --text-lg--line-height: 1.45;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 2.25rem;
+  --text-2xl--line-height: 1.12;
+  --text-3xl: 3rem;
+  --text-3xl--line-height: 1.04;
+  --text-display: clamp(2.75rem, 1.4rem + 5.6vw, 4.5rem);
+  --text-display--line-height: 0.98;
+
+  /* Radii by role, not one radius for everything. */
+  --radius-sm: 0.25rem; /* controls */
+  --radius-md: 0.5rem; /* cards */
+  --radius-lg: 0.875rem; /* media */
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    background-color: var(--canvas);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    /* Keeps headings visible under the sticky header when jumping to an anchor. */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* The UA popover style centres the box with margins and a border; we position it ourselves. */
+  [popover] {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    background: transparent;
+  }
+}
+
+/* Respect reduced-motion settings everywhere, including third-party styles. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

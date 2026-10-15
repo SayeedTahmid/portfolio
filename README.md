@@ -28,7 +28,42 @@ npm run typecheck    # generate route types, then tsc --noEmit
 npm run lint         # ESLint, zero warnings allowed
 npm run format       # format with Prettier
 npm run check        # typecheck + lint + format check + production build
+npm run test:e2e:full  # production build, then Playwright + axe tests
 ```
+
+### End-to-end and accessibility tests
+
+Playwright runs against the production build at desktop and phone sizes:
+
+- `tests/a11y.spec.ts`: axe-core WCAG 2.2 A/AA scan of every page in light and dark themes
+- `tests/layout.spec.ts`: no horizontal scrolling at 320px and 375px (WCAG 1.4.10)
+- `tests/shell.spec.ts`: skip link, theme persistence, no wrong-theme flash, OS theme following, mobile menu
+
+First time on a new machine, install the browser:
+
+```bash
+npx playwright install chromium
+```
+
+`@playwright/test` is pinned to an exact version because each release expects a matching browser build.
+
+## Project structure
+
+```
+app/            routes, root layout, global styles and design tokens (globals.css)
+app/fonts/      self-hosted variable fonts (OFL-1.1, licences in app/fonts/licenses)
+components/     layout, theme and UI components
+content/        site identity, project registry, images
+lib/            fonts, theme logic, helpers
+tests/          Playwright specs
+```
+
+## Design tokens
+
+Colours are defined in three layers in `app/globals.css`: raw palette values, semantic tokens
+per theme (`--canvas`, `--fg`, `--primary`, ...), and Tailwind utilities generated only from
+the semantic tokens (`bg-canvas`, `text-fg-muted`, `border-line`). Components never use raw
+colour values. Contrast ratios for every text pair are recorded next to the tokens.
 
 ## Known advisories
 
