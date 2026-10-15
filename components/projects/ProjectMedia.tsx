@@ -32,7 +32,8 @@ export function ProjectMedia({
     return (
       <div
         className={cx(
-          "flex aspect-[16/10] flex-col items-center justify-center gap-2 bg-canvas text-fg-muted",
+          // Hidden on phones, where a single column of empty panels only pushes content down.
+          "hidden aspect-[16/10] flex-col items-center justify-center gap-2 bg-canvas text-fg-muted md:flex",
           "bg-[repeating-linear-gradient(135deg,transparent_0_10px,var(--line)_10px_11px)]",
           className,
         )}

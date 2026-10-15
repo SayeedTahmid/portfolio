@@ -332,10 +332,10 @@ export function getProject(slug: string): Project | undefined {
 
 /** Projects shown on the home page, in this order. Change the slugs to change the selection. */
 export const featuredSlugs = [
-  "multi-tenant-crm",
-  "pediatric-brain-tumor-segmentation",
   "crowd-action-detection",
+  "multi-tenant-crm",
   "used-clothing-marketplace",
+  "pediatric-brain-tumor-segmentation",
 ] as const;
 
 export function getFeaturedProjects(): Project[] {

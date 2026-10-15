@@ -1,6 +1,6 @@
 /**
- * Skills as listed on Tahmid's résumé (October 2026), grouped the same way.
- * MySQL is added because the Used-Cloth-Marketplace-DBMS repository demonstrates it.
+ * Skills exactly as listed on Tahmid's résumé (October 2026), regrouped for the
+ * homepage. Add a skill only after Tahmid confirms it. No proficiency levels.
  */
 export type SkillGroup = {
   label: string;
@@ -22,7 +22,15 @@ export const skillGroups: readonly SkillGroup[] = [
     ],
   },
   {
-    label: "Machine learning",
+    label: "Frontend",
+    items: ["React", "Tailwind CSS", "Vite"],
+  },
+  {
+    label: "Backend and databases",
+    items: ["Flask", "REST APIs", "Firebase (Firestore, Auth)", "n8n"],
+  },
+  {
+    label: "AI and machine learning",
     items: [
       "PyTorch",
       "Vision Transformers (ViT, CLIP)",
@@ -33,28 +41,17 @@ export const skillGroups: readonly SkillGroup[] = [
     ],
   },
   {
-    label: "Web, backend and data",
-    items: [
-      "React",
-      "Flask",
-      "REST APIs",
-      "Tailwind CSS",
-      "Vite",
-      "Firebase (Firestore, Auth)",
-      "MySQL",
-      "n8n",
-    ],
-  },
-  {
     label: "Embedded systems",
     items: [
       "Bare-metal C on STM32 / ARM Cortex-M",
       "Interrupts",
-      "I2C, ADC, PWM",
+      "I2C",
+      "ADC",
+      "PWM",
     ],
   },
   {
-    label: "Tools",
+    label: "Development tools",
     items: [
       "Git",
       "Google Colab",

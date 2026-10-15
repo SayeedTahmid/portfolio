@@ -22,7 +22,7 @@ const elsewhere = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-line sm:mt-32">
+    <footer className="mt-8 border-t border-line sm:mt-12">
       <Container className="grid gap-10 py-12 sm:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <p className="font-semibold text-fg">{site.name}</p>
