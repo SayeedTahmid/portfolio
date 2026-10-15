@@ -51,7 +51,7 @@ export function ThemeSwitcher() {
 
   return (
     <fieldset className="flex items-center gap-0.5 rounded-sm border border-line-strong p-0.5">
-      <legend className="sr-only">Colour theme</legend>
+      <legend className="sr-only">Color theme</legend>
       {options.map(({ value, label, Icon }) => (
         <label
           key={value}

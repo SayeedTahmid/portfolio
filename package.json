@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=22.12"
+    "node": ">=22.18"
   },
   "scripts": {
     "dev": "next dev",
@@ -13,9 +13,10 @@
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run typecheck && npm run lint && npm run format:check && npm run build",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run validate:content && npm run build",
     "test:e2e": "playwright test",
-    "test:e2e:full": "npm run build && playwright test"
+    "test:e2e:full": "npm run build && playwright test",
+    "validate:content": "node scripts/validate-content.ts"
   },
   "dependencies": {
     "lucide-react": "^1.57.0",

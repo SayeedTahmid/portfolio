@@ -14,7 +14,7 @@ Personal portfolio site. Static Next.js App Router site, deployed on Vercel.
 
 ## Requirements
 
-- Node.js 22.12 or newer
+- Node.js 22.18 or newer (the content validator uses Node's built-in TypeScript support)
 - npm 10+
 
 ## Commands
@@ -27,7 +27,8 @@ npm run dev          # dev server at http://localhost:3000
 npm run typecheck    # generate route types, then tsc --noEmit
 npm run lint         # ESLint, zero warnings allowed
 npm run format       # format with Prettier
-npm run check        # typecheck + lint + format check + production build
+npm run validate:content  # check the project registry (see below)
+npm run check        # typecheck + lint + format check + content validation + production build
 npm run test:e2e:full  # production build, then Playwright + axe tests
 ```
 
@@ -57,6 +58,20 @@ content/        site identity, project registry, images
 lib/            fonts, theme logic, helpers
 tests/          Playwright specs
 ```
+
+## Content
+
+All site content lives in `content/` and every statement must be traceable:
+
+- `content/site.ts`: name, positioning, contact links
+- `content/projects.ts`: the project registry. Each project lists its `evidence` (the résumé, a
+  repository, or a report), every metric carries a `source`, and links render only when they exist.
+  Team details are optional and are omitted until confirmed, never guessed.
+- `content/skills.ts`, `content/profile.ts`: skills, education and activities from the résumé
+
+`npm run validate:content` enforces the rules TypeScript can't: unique kebab-case slugs, https
+links, local files that exist in `public/`, an availability note for projects without links,
+and 2–3 featured projects. Errors fail `npm run check`; warnings list details still to confirm.
 
 ## Design tokens
 
