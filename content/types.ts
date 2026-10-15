@@ -35,9 +35,23 @@ export type Source = {
   href?: string;
 };
 
+/**
+ * Which data a number was measured on. Shown next to every metric so readers can
+ * tell a held-out test result from a validation or preliminary one.
+ */
+export type EvaluationKind = "test" | "validation" | "preliminary" | "other";
+
+export const evaluationLabels: Record<EvaluationKind, string> = {
+  test: "Held-out test set",
+  validation: "Validation set",
+  preliminary: "Preliminary result",
+  other: "Measured",
+};
+
 export type Metric = {
   label: string;
   value: string;
+  evaluation: EvaluationKind;
   /** What the number was measured on, e.g. "126 held-out clips". */
   detail?: string;
   source: Source;
@@ -76,6 +90,41 @@ export type ProjectImage = {
   fit?: "contain" | "cover";
 };
 
+/** A real figure from the project: screenshot, diagram or result plot. */
+export type CaseStudyFigure = ProjectImage & { caption: string };
+
+/** Paragraphs of prose. */
+export type Prose = readonly string[];
+
+/**
+ * Long-form case study. Every field is optional: the page renders a section only
+ * when it has verified content, and hides it otherwise. Section order on the page:
+ * overview, problem, role, requirements, architecture, implementation,
+ * technologies, decisions, results, limitations, figures, resources.
+ */
+export type CaseStudy = {
+  /** Adds to the summary at the top of the page. */
+  overview?: Prose;
+  problem?: Prose;
+  /** What Tahmid personally did, as concrete bullet points. */
+  contributions?: readonly string[];
+  requirements?: readonly string[];
+  architecture?: {
+    prose?: Prose;
+    /** Main parts of the system, in data-flow order. */
+    components?: readonly { name: string; description: string }[];
+  };
+  implementation?: readonly { title: string; body: Prose }[];
+  /** Technologies with the job each one did. Falls back to `stack` when absent. */
+  technologies?: readonly { name: string; purpose: string }[];
+  decisions?: readonly { title: string; body: string }[];
+  /** Narrative around the numbers; the numbers themselves live in `metrics`. */
+  results?: Prose;
+  limitations?: readonly string[];
+  futureWork?: readonly string[];
+  figures?: readonly CaseStudyFigure[];
+};
+
 export type Project = {
   slug: string;
   title: string;
@@ -99,5 +148,7 @@ export type Project = {
   availabilityNote?: string;
   /** Documents the summary, highlights and metrics were drawn from. */
   evidence: readonly Source[];
+  /** Card thumbnail and the lead image on the case-study page. */
   image?: ProjectImage;
+  caseStudy?: CaseStudy;
 };

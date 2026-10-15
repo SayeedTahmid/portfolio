@@ -1,3 +1,4 @@
+import { crowdActionDetection } from "./case-studies/crowd-action-detection.ts";
 import type { Project, ProjectCategory, Source } from "./types.ts";
 
 /*
@@ -9,6 +10,10 @@ import type { Project, ProjectCategory, Source } from "./types.ts";
 const resume: Source = {
   label: "Résumé, October 2026",
   href: "/syed-tahmid-manzoor-resume.pdf",
+};
+
+const cse465Report: Source = {
+  label: "CSE465 final report, Summer 2026 (not public)",
 };
 
 const github = (repo: string) => `https://github.com/SayeedTahmid/${repo}`;
@@ -58,7 +63,6 @@ export const projects: readonly Project[] = [
     team: { kind: "team", size: 3 },
     role: "Leads the deep-learning pipeline.",
     highlights: [
-      "Leads the deep-learning pipeline for volumetric tumor segmentation on the BraTS-PEDs 2024 release.",
       "Rescoped the problem, dataset and evaluation protocol under a fixed deadline after the initial approach proved unviable.",
     ],
     stack: ["Python", "PyTorch"],
@@ -89,36 +93,39 @@ export const projects: readonly Project[] = [
     ],
     metrics: [
       {
-        label: "Accuracy",
-        value: "98.85% ± 0.11",
-        detail: "6,364 aligned instances, four gas classes",
-        source: { label: "CSE465 final report, Summer 2026 (not public)" },
-      },
-      {
         label: "Expected calibration error",
         value: "0.0029",
-        detail: "native confidence gate",
-        source: { label: "CSE465 final report, Summer 2026 (not public)" },
+        evaluation: "test",
+        detail:
+          "native confidence gate, held-out test split of 956 clean recordings",
+        source: cse465Report,
       },
       {
-        label: "Trainable parameters",
-        value: "1.31%",
-        detail: "1.14 M, with the ViT-B/16 backbone frozen",
-        source: { label: "CSE465 final report, Summer 2026 (not public)" },
+        label: "Accuracy",
+        value: "98.85% ± 0.11",
+        evaluation: "test",
+        detail:
+          "mean of 3 seeds on the same split; equal to the strongest baselines, so the gain is in calibration, not accuracy",
+        source: cse465Report,
       },
       {
         label: "Accuracy drop under continuous sensor noise",
         value: "4.19 points",
+        evaluation: "test",
         detail: "98.95% to 94.76%, best seed",
-        source: { label: "CSE465 final report, Summer 2026 (not public)" },
+        source: cse465Report,
+      },
+      {
+        label: "Trainable parameters",
+        value: "1.31%",
+        evaluation: "other",
+        detail: "1.14 M, with the ViT-B/16 backbone frozen",
+        source: cse465Report,
       },
     ],
     stack: ["Python", "PyTorch", "ViT-B/16", "LoRA", "FT-Transformer"],
     availabilityNote: "The report and code are not public.",
-    evidence: [
-      resume,
-      { label: "CSE465 final report, Summer 2026 (not public)" },
-    ],
+    evidence: [resume, cse465Report],
   },
   {
     slug: "crowd-action-detection",
@@ -130,7 +137,7 @@ export const projects: readonly Project[] = [
     year: 2026,
     team: { kind: "solo" },
     highlights: [
-      "Built a dataset of 837 short crowd clips from publicly available footage, split 585 / 126 / 126 for training, validation and test.",
+      "Built a dataset of 837 short crowd clips cut from 13 publicly available videos, split 585 / 126 / 126 for training, validation and test.",
       "Kept the CLIP backbone frozen and trained only a two-layer classifier head on its image embeddings.",
       "Deployed a Gradio interface that takes a short video clip and returns the predicted action with confidence scores.",
     ],
@@ -138,18 +145,32 @@ export const projects: readonly Project[] = [
       {
         label: "Test accuracy",
         value: "96%",
-        detail: "126 held-out clips",
+        evaluation: "test",
+        detail:
+          "121 of 126 clips; all test clips come from source videos also used in training",
         source: {
-          label: "Repository README, results table",
+          label: "Repository README and confusion matrix",
           href: github("Crowd-action-detection-VLM"),
         },
       },
       {
         label: "Fighting-class F1",
         value: "0.88",
-        detail: "weakest class; some fighting clips are read as walking",
+        evaluation: "test",
+        detail: "weakest class; 5 of 24 fighting clips misclassified",
         source: {
-          label: "Repository README, results table",
+          label: "Repository README and confusion matrix",
+          href: github("Crowd-action-detection-VLM"),
+        },
+      },
+      {
+        label: "Best validation accuracy",
+        value: "98.4%",
+        evaluation: "validation",
+        detail:
+          "126 clips; used to choose the checkpoint, so not an unbiased estimate",
+        source: {
+          label: "Repository README, training log",
           href: github("Crowd-action-detection-VLM"),
         },
       },
@@ -174,6 +195,7 @@ export const projects: readonly Project[] = [
       height: 536,
       alt: "The Gradio demo after a festival dance clip is uploaded: the video on the left, and on the right the prediction “dancing” at 62%, with walking at 21% and fighting at 17%.",
     },
+    caseStudy: crowdActionDetection,
     evidence: [
       resume,
       {
@@ -308,6 +330,7 @@ export const projects: readonly Project[] = [
       {
         label: "Bill of materials",
         value: "BDT 1,835",
+        evaluation: "other",
         detail: "complete prototype, Dhaka electronics market prices",
         source: { label: "CSE331L project report (not public)" },
       },

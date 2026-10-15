@@ -95,19 +95,25 @@ for (const project of projects) {
       `${slug}: has no links, so it needs an availabilityNote explaining why`,
     );
   }
-  if (project.image) {
-    const { src, width, height, alt } = project.image;
-    checkHref(project, "image", src);
-    if (alt.trim().length < 20) {
-      errors.push(
-        `${slug}: image alt text should describe what the image shows`,
-      );
+  const images = [
+    ...(project.image ? [["image", project.image] as const] : []),
+    ...(project.caseStudy?.figures ?? []).map(
+      (figure, i) => [`figure ${i + 1}`, figure] as const,
+    ),
+  ];
+  for (const [where, image] of images) {
+    checkHref(project, where, image.src);
+    if (image.alt.trim().length < 20) {
+      errors.push(`${slug}: ${where} alt text should describe what it shows`);
     }
-    const file = join(PUBLIC_DIR, src);
+    const file = join(PUBLIC_DIR, image.src);
     const actual = existsSync(file) ? imageSize(file) : null;
-    if (actual && (actual.width !== width || actual.height !== height)) {
+    if (
+      actual &&
+      (actual.width !== image.width || actual.height !== image.height)
+    ) {
       errors.push(
-        `${slug}: image is ${actual.width}x${actual.height} but declared as ${width}x${height}`,
+        `${slug}: ${where} is ${actual.width}x${actual.height} but declared as ${image.width}x${image.height}`,
       );
     }
   }
