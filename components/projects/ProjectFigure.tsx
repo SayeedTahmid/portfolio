@@ -12,7 +12,8 @@ type ProjectFigureProps = {
 };
 
 /**
- * A real project image at its own aspect ratio: never stretched or cropped.
+ * A real project image at its own aspect ratio: never stretched, cropped or
+ * enlarged past its own pixel width (narrow screenshots are centred instead).
  * Width and height come from the content registry (checked against the file by
  * the content validator), so the browser reserves space and nothing shifts.
  */
@@ -25,7 +26,7 @@ export function ProjectFigure({
 }: ProjectFigureProps) {
   return (
     <figure className={cx("space-y-3", className)}>
-      <div className="overflow-hidden rounded-lg border border-line bg-soft">
+      <div className="flex justify-center overflow-hidden rounded-lg border border-line bg-soft">
         <Image
           src={image.src}
           alt={image.alt}
@@ -33,6 +34,8 @@ export function ProjectFigure({
           height={image.height}
           sizes={sizes}
           priority={priority}
+          // Never wider than the file itself, so small screenshots stay sharp.
+          style={{ maxWidth: `${image.width}px` }}
           className="h-auto w-full"
         />
       </div>

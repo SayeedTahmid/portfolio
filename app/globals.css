@@ -141,8 +141,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Keeps anchored headings clear of the sticky header. */
-    scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -159,6 +157,15 @@
   h2,
   h3 {
     text-wrap: balance;
+  }
+
+  /*
+   * Keeps anchor targets clear of the sticky header. Deliberately not
+   * scroll-padding on <html>: that makes browsers scroll the page whenever a
+   * control inside the sticky header (the theme switcher) receives focus.
+   */
+  [id] {
+    scroll-margin-top: 5rem;
   }
 
   p {

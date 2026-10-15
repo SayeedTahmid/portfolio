@@ -35,7 +35,7 @@ export function TechTagList({
   );
 }
 
-export function TechTag({
+function TechTag({
   children,
   muted = false,
 }: {
