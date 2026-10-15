@@ -1,94 +1,97 @@
-# Syed Tahmid Manzoor — portfolio
+# Syed Tahmid Manzoor: portfolio
 
-Personal portfolio site. Static Next.js App Router site, deployed on Vercel.
+Personal portfolio site: homepage, project index, case studies and an About page.
+Static Next.js App Router site, deployed on Vercel.
+
+- **Deploying:** [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) (Vercel setup, custom domain, verification, launch checklist)
+- **Adding a project:** [`docs/ADDING-A-PROJECT.md`](docs/ADDING-A-PROJECT.md)
 
 ## Stack
 
-| Package           | Version | Why this version                                                                          |
-| ----------------- | ------- | ----------------------------------------------------------------------------------------- |
-| Next.js           | 16.4.1  | Latest stable. Cache Components and Partial Prefetching on (16.4 defaults).               |
-| React / React DOM | 19.3.1  |                                                                                           |
-| TypeScript        | 6.0.3   | Pinned. TS 7 breaks `typescript-eslint` (peer range `<6.1.0`) used by Next's lint config. |
-| Tailwind CSS      | 4.x     | CSS-first config via the `@tailwindcss/turbopack` loader (Next 16.4 default).             |
-| ESLint            | 9.x     | ESLint 10 isn't supported yet by `eslint-plugin-react`, `-import` or `-jsx-a11y`.         |
+| Package           | Version                              | Notes                                                                                     |
+| ----------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- |
+| Next.js           | 16.4.1                               | App Router, Cache Components, Partial Prefetching, typed routes                           |
+| React / React DOM | 19.3.1                               | Server components by default; two small client components (navigation, theme switcher)    |
+| TypeScript        | 6.0.3                                | Pinned. TS 7 breaks `typescript-eslint` (peer range `<6.1.0`) used by Next's lint config. |
+| Tailwind CSS      | 4.x                                  | CSS-first config through `@tailwindcss/turbopack`; tokens in `app/globals.css`            |
+| Geist, Geist Mono | `geist` 1.7                          | Self-hosted through `next/font/local` (SIL OFL 1.1)                                       |
+| lucide-react      | 1.x                                  | Icons                                                                                     |
+| ESLint            | 9.x                                  | ESLint 10 isn't supported yet by `eslint-plugin-react`, `-import` or `-jsx-a11y`.         |
+| Playwright + axe  | 1.56.1 / `@axe-core/playwright` 4.14 | End-to-end and accessibility tests                                                        |
+
+No database, CMS, backend, authentication or analytics.
 
 ## Requirements
 
-- Node.js 22.18 or newer (the content validator uses Node's built-in TypeScript support)
+- Node.js 22.18 or newer (`package.json` pins Vercel to 22.x)
 - npm 10+
 
 ## Commands
 
-Run all commands from the repository root.
+Run from the repository root.
 
 ```bash
-npm install          # install dependencies
-npm run dev          # dev server at http://localhost:3000
-npm run typecheck    # generate route types, then tsc --noEmit
-npm run lint         # ESLint, zero warnings allowed
-npm run format       # format with Prettier
-npm run validate:content  # check the project registry (see below)
-npm run check        # typecheck + lint + format check + content validation + production build
-npm run test:e2e:full  # production build, then Playwright + axe tests
+npm install               # install dependencies
+npm run dev               # development server at http://localhost:3000
+npm run check             # typecheck + lint + format check + contrast + content validation + build
+npm run test:e2e:full     # production build, then the Playwright suite
 ```
 
-### End-to-end and accessibility tests
-
-Playwright runs against the production build at desktop and phone sizes:
-
-- `tests/a11y.spec.ts`: axe-core WCAG 2.2 A/AA scan of every page in light and dark themes
-- `tests/layout.spec.ts`: no horizontal scrolling at 320px and 375px (WCAG 1.4.10)
-- `tests/shell.spec.ts`: skip link, theme persistence, no wrong-theme flash, OS theme following, mobile menu
-
-First time on a new machine, install the browser:
-
-```bash
-npx playwright install chromium
-```
-
-`@playwright/test` is pinned to an exact version because each release expects a matching browser build.
+Individual steps: `npm run typecheck`, `npm run lint`, `npm run format`,
+`npm run check:contrast`, `npm run validate:content`, `npm run build`.
 
 ## Project structure
 
 ```
-app/            routes, root layout, global styles and design tokens (globals.css)
-app/fonts/      self-hosted variable fonts (OFL-1.1, licences in app/fonts/licenses)
-components/     layout, theme and UI components
-content/        site identity, project registry, images
-lib/            fonts, theme logic, helpers
-tests/          Playwright specs
+app/                  routes, root layout, design tokens (globals.css), metadata files
+  projects/[slug]/    case-study pages and their share images
+components/           layout, theme, home sections, project cards, case-study parts, UI primitives
+content/              all site content: identity, projects, case studies, skills, profile, images
+lib/                  fonts, theme script, site URL, metadata helper, share-image renderer
+public/               résumé PDF and project images
+scripts/              contrast checker and content validator (run with Node directly)
+tests/                Playwright suites
+proxy.ts              returns a real 404 for unknown project URLs
+docs/                 deployment and content guides
 ```
 
-## Content
+## How the main guarantees are enforced
 
-All site content lives in `content/` and every statement must be traceable:
+| Guarantee                                                   | Enforced by                                                                     |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Every text and control colour pair meets WCAG 2.2 AA        | `scripts/check-contrast.ts` (56 pairs, both themes, reads the real CSS)         |
+| No invented claims: every project lists its sources         | Required `evidence` field; metrics need a `source` and an `evaluation` kind     |
+| No dead links or broken images                              | `scripts/validate-content.ts`, typed routes, link-crawl test                    |
+| Empty case-study sections are hidden, never padded          | `components/case-study/buildSections.tsx`                                       |
+| Accessible in both themes at every width                    | axe (WCAG 2.2 A/AA), focus, target size, heading and reflow tests               |
+| Theme: no flash, persists, follows the OS, keeps page state | Inline head script in `lib/theme.ts`; `tests/shell.spec.ts`, `tests/qa.spec.ts` |
+| Correct metadata on every page                              | `lib/metadata.ts`; `tests/seo.spec.ts`                                          |
 
-- `content/site.ts`: name, positioning, contact links
-- `content/projects.ts`: the project registry. Each project lists its `evidence` (the résumé, a
-  repository, or a report), every metric carries a `source`, and links render only when they exist.
-  Team details are optional and are omitted until confirmed, never guessed.
-- `content/skills.ts`, `content/profile.ts`: skills, education and activities from the résumé
+## Tests
 
-`npm run validate:content` enforces the rules TypeScript can't: unique kebab-case slugs, https
-links, local files that exist in `public/`, an availability note for projects without links,
-and 2–3 featured projects. Errors fail `npm run check`; warnings list details still to confirm.
+Playwright runs every suite at desktop and phone sizes against the production build:
 
-## Design tokens
+- `a11y.spec.ts`: axe WCAG 2.2 A/AA on every route, light and dark
+- `qa.spec.ts`: landmarks, heading order, theme on every route, focus visibility, target
+  size, reduced motion, link crawl, image checks, console errors, security headers
+- `layout.spec.ts`: no horizontal scrolling at 320, 375, 768, 1024, 1280 and 1600px
+- `home.spec.ts`, `case-study.spec.ts`, `seo.spec.ts`, `shell.spec.ts`
 
-Colours are defined in three layers in `app/globals.css`: raw palette values, semantic tokens
-per theme (`--canvas`, `--fg`, `--primary`, ...), and Tailwind utilities generated only from
-the semantic tokens (`bg-canvas`, `text-fg-muted`, `border-line`). Components never use raw
-colour values. Contrast ratios for every text pair are recorded next to the tokens.
+`@playwright/test` is pinned to an exact version because each release expects a matching
+browser build. To test a deployed site: `PLAYWRIGHT_BASE_URL=https://… npx playwright test`.
+
+GitHub Actions (`.github/workflows/ci.yml`) runs `npm run check` and the Playwright suite on
+every push and pull request.
 
 ## Known advisories
 
-`npm audit` reports 5 high-severity advisories. All of them come from one chain inside the
-lint toolchain only (`eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` →
-`micromatch` → `braces`, GHSA-vfj7-8cjw-p6xm). No patched `braces` release exists yet, the
-package never ships to site visitors, and the attack needs a malicious glob pattern passed
-to the linter. npm's suggested fix (downgrading to `eslint-config-next@14`) is wrong for
-this project and should not be applied.
+`npm audit` reports high-severity advisories from one chain inside the lint toolchain only
+(`eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch` → `braces`,
+GHSA-vfj7-8cjw-p6xm). No patched `braces` release exists, the package never ships to
+visitors, and exploiting it needs a malicious glob passed to the linter. npm's suggested
+fix (downgrading to `eslint-config-next@14`) is wrong for this project; don't apply it.
 
-## Deployment
+## Licences
 
-Deployment instructions are added in the final phase.
+Code: all rights reserved by Syed Tahmid Manzoor unless a licence is added. Fonts: Geist
+and Geist Mono, SIL Open Font License 1.1 (`lib/og/fonts/Geist-OFL.txt`).
