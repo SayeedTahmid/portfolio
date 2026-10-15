@@ -45,6 +45,9 @@ images. Cards, its page, the sitemap and share images all go with it. If it was 
 homepage, the remaining featured projects move up. If none are left featured, the homepage
 shows your four newest projects.
 
+Your About text (`content/profile.ts`) mentions some projects by name in its prose; if you
+remove one of those, edit that sentence too.
+
 ### Choose what's on the homepage
 
 In a project's `project.ts`, `featured: 1` puts it first on the homepage, `featured: 2`

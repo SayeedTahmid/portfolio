@@ -14,6 +14,10 @@ export const metadata: Metadata = pageMetadata({
 
 /** All projects, grouped by category. With fewer than ~10 projects, grouping beats a filter UI. */
 export default function ProjectsPage() {
+  const activeCategories = categoryOrder.filter(
+    (category) => getProjectsByCategory(category).length > 0,
+  );
+
   return (
     <div className="pt-14 pb-16 sm:pt-20">
       <Container>
@@ -25,18 +29,21 @@ export default function ProjectsPage() {
           learning research and embedded systems. Each card opens a case study.
         </p>
 
-        <nav aria-label="Project categories" className="mt-8">
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            {categoryOrder.map((category) => (
-              <li key={category}>
-                <a href={`#${category}`} className="link">
-                  {categoryLabels[category]} (
-                  {getProjectsByCategory(category).length})
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {/* Only categories that currently have projects, so no link points at a missing section. */}
+        {activeCategories.length > 1 ? (
+          <nav aria-label="Project categories" className="mt-8">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              {activeCategories.map((category) => (
+                <li key={category}>
+                  <a href={`#${category}`} className="link">
+                    {categoryLabels[category]} (
+                    {getProjectsByCategory(category).length})
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ) : null}
 
         {projects.length === 0 ? (
           <p className="mt-14 text-fg-muted">
@@ -45,9 +52,8 @@ export default function ProjectsPage() {
         ) : null}
 
         <div className="mt-14 space-y-20">
-          {categoryOrder.map((category) => {
+          {activeCategories.map((category) => {
             const group = getProjectsByCategory(category);
-            if (group.length === 0) return null;
             return (
               <section key={category} aria-labelledby={category}>
                 <h2
