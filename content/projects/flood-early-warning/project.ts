@@ -40,6 +40,16 @@ const project: Project = {
     "ADC",
     "PWM",
   ],
+  image: {
+    src: "/projects/flood-early-warning/prototype.jpg",
+    width: 1094,
+    height: 1600,
+    alt: "Photo of the prototype on a lab desk: an HC-SR04 ultrasonic sensor rests on the rim of a paper cup of water to measure its level, a soil-moisture probe is pushed into a potted plant, and a 4×4 membrane keypad and an ST-LINK V2 programmer are wired to the STM32 board on a breadboard.",
+    caption:
+      "The breadboard prototype under test: the HC-SR04 measures the water level in a paper cup, and the soil-moisture probe sits in a potted plant.",
+    // A photo: on project cards it fills the frame instead of being letterboxed.
+    fit: "cover",
+  },
   availabilityNote: "The firmware and report are not public.",
   evidence: [resume, { label: "CSE331L project report (not public)" }],
 };
