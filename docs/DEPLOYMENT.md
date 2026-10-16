@@ -24,7 +24,7 @@ Then confirm the personal details below are final.
 | Hero headline and description (currently your placeholder copy) | `content/site.ts`                       | `headline`, `description`                                        |
 | Share-preview / meta description                                | `content/site.ts`                       | `positioning`                                                    |
 | Email, GitHub, LinkedIn                                         | `content/site.ts`                       | `email`, `links.github`, `links.linkedin`                        |
-| Résumé PDF                                                      | `public/syed-tahmid-manzoor-resume.pdf` | replace the file; the link is `site.resume.href`                 |
+| Resume PDF                                                      | `public/syed-tahmid-manzoor-resume.pdf` | replace the file; the link is `site.resume.href`                 |
 | Profile photo                                                   | `content/profile-photo.jpg`             | add, replace or delete the file (see `docs/MANAGING-CONTENT.md`) |
 | Homepage hero image (contour figure when absent)                | `content/hero-image.jpg`                | add, replace or delete the file; description in `heroImageAlt`   |
 | About text                                                      | `content/profile.ts`                    | `aboutPreview`, `aboutFull`                                      |
@@ -166,7 +166,7 @@ Must do before sharing the link:
 
 Recommended:
 
-- [ ] Add the site URL to your GitHub profile, LinkedIn and résumé.
+- [ ] Add the site URL to your GitHub profile, LinkedIn and resume.
 - [ ] Wake the Hugging Face Space before applications go out.
 - [ ] Clean the editor folders (`extensions/`, `projects/`, `mcp.json`, `argv.json`) out of
       the CRM repository's root before recruiters click through to it.

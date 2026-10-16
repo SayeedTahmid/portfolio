@@ -1,5 +1,5 @@
 /**
- * Biography, education and activities. Facts come from Tahmid's résumé (October 2026)
+ * Biography, education and activities. Facts come from Tahmid's resume (October 2026)
  * and his project reports. The prose is a DRAFT for Tahmid to approve or rewrite.
  */
 

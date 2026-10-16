@@ -24,7 +24,7 @@ export const site = {
   },
   resume: {
     href: "/syed-tahmid-manzoor-resume.pdf",
-    label: "Résumé (PDF)",
+    label: "Resume (PDF)",
   },
   /**
    * Description of content/hero-image.* for screen readers and search engines.

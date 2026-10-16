@@ -70,7 +70,7 @@ export default function AboutPage() {
                 size="lg"
                 icon={<FileText className="size-4" strokeWidth={2} />}
               >
-                View résumé
+                View resume
               </ButtonLink>
               <ButtonLink href="/projects" size="lg" variant="secondary">
                 See projects

@@ -46,7 +46,7 @@ export function Hero() {
               size="lg"
               variant="secondary"
             >
-              View résumé
+              View resume
             </ButtonLink>
           </div>
         </div>

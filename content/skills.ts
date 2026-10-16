@@ -1,5 +1,5 @@
 /**
- * Skills exactly as listed on Tahmid's résumé (October 2026), regrouped for the
+ * Skills exactly as listed on Tahmid's resume (October 2026), regrouped for the
  * homepage. Add a skill only after Tahmid confirms it. No proficiency levels.
  */
 export type SkillGroup = {

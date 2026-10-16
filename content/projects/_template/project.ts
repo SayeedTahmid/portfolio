@@ -3,7 +3,7 @@
  * (lowercase-with-hyphens, e.g. "weather-dashboard"), then edit the copy.
  * Folders starting with "_" are ignored, so this template never appears on the site.
  *
- * Only state what a reader could check (a repo, a report, your résumé), and list it
+ * Only state what a reader could check (a repo, a report, your resume), and list it
  * in `evidence`. Delete any optional field you can't fill truthfully.
  * Full guide: docs/MANAGING-CONTENT.md
  */

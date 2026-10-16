@@ -49,7 +49,7 @@ components/           layout, theme, home sections, project cards, case-study pa
 content/              all site content: identity, profile photo, skills, profile text
   projects/<slug>/    one folder per project (project.ts, optional case-study.ts); _template to copy
 lib/                  fonts, theme script, site URL, metadata helper, share-image renderer
-public/               résumé PDF and project images
+public/               resume PDF and project images
 scripts/              content index generator, contrast checker, content validator (Node, no build step)
 tests/                Playwright suites
 proxy.ts              returns a real 404 for unknown project URLs
