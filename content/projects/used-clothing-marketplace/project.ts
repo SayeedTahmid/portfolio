@@ -23,10 +23,12 @@ const project: Project = {
     },
   ],
   image: {
-    src: "/projects/used-clothing-marketplace/cascade-delete-test.png",
-    width: 888,
-    height: 338,
-    alt: "MySQL Workbench test: deleting category 40, then selecting clothes in that category returns an empty result, confirming the cascading delete.",
+    src: "/projects/used-clothing-marketplace/er-diagram.png",
+    width: 972,
+    height: 829,
+    alt: "Entity-relationship diagram of the seven tables (user, cloth, category, review, order, orderitem and payment) with their columns and keys. Foreign keys link reviews to users and clothes, clothes to their category and seller, categories to a parent category, orders to users, payments to orders, and order items to both orders and clothes.",
+    caption:
+      "Entity-relationship diagram from MySQL Workbench: seven tables connected by nine foreign keys.",
   },
   evidence: [
     {
