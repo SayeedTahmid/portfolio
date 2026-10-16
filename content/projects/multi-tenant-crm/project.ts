@@ -34,6 +34,14 @@ const project: Project = {
       label: "Source code",
     },
   ],
+  image: {
+    src: "/projects/multi-tenant-crm/dashboard.png",
+    width: 1781,
+    height: 930,
+    alt: "The NextGen CRM web dashboard in dark mode: summary cards for total customers (12), open complaints (13), recent logs (0) and performance (3); shortcuts to manage customers, manage complaints, view all logs and create a log; an AI Recommendations grid of customer cards, each with a View AI Insights button; and the CRM Assistant chat panel open on the right. Customer names and email addresses are covered with grey bars.",
+    caption:
+      "The web client's dashboard with test data: summary counts, shortcuts, per-customer AI recommendations and the CRM Assistant chat panel. Customer names and email addresses are covered.",
+  },
   evidence: [
     resume,
     {

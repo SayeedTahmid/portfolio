@@ -19,14 +19,14 @@ const project: Project = {
   ],
   stack: ["Python", "PyTorch"],
   availabilityNote:
-    "The code is private while the research is in progress. The figure is a qualitative explainability check; segmentation scores will be published when the work is complete.",
+    "The code is private while the research is in progress. No results are published here until the work is complete.",
   image: {
-    src: "/projects/pediatric-brain-tumor-segmentation/seg-grad-cam-edema.png",
-    width: 2560,
-    height: 2597,
-    alt: "A four-by-four grid of axial MRI slices from two cases, 0141 and 0091, with the ground-truth edema outlined in green. For each case, one row shows the DynUNet baseline and one row shows the Row 4 model (+DS +att +FP); the columns show the T1CE scan and Seg-Grad-CAM heat maps at decoder levels upsamples.0, upsamples.1 and upsamples.2. In the baseline rows, the heat maps at upsamples.1 and upsamples.2 fall mostly on the skull and background or are nearly empty. In the Row 4 rows, the heat maps at all three levels sit inside or close to the edema outline.",
+    src: "/projects/pediatric-brain-tumor-segmentation/full-pipeline.png",
+    width: 2400,
+    height: 1538,
+    alt: "Diagram of the full pipeline in five parts. 1, data and shared preprocessing: BraTS-PED 2024 (257 patients, four MRI sequences), RAS orientation, foreground crop, channel-wise normalisation and 128-cubed patches, a fixed split of 180 training, 25 inner-validation and 52 held-out test patients, training-only augmentation, and four ground-truth labels (ET, NET, CC, ED). 2, stage 1, controlled benchmark: SegResNet, Attention U-Net, DynUNet, Swin UNETR, nnU-Net and a wider SegResNet as a capacity control, under a shared protocol with five random seeds and validation-based checkpoint selection, plus SegResNet loss and modality ablations and scratch versus adult-pretraining transfer for SegResNet and Swin UNETR. 3, stage 2, DynUNet extension: a residual encoder-decoder with deep supervision, attention gates and a false-positive penalty with a patient-adaptive weight. 4, inference: best checkpoint, sliding window, segmentation files in the original space. 5, evaluation and explainability: presence-aware Dice, empty-as-one Dice and official lesion-wise Dice, HD95, false-positive analysis and absence contribution, with seed-vote entropy, attention-gate inspection and Seg-Grad-CAM.",
     caption:
-      "Seg-Grad-CAM for the edema output (seed 42), computed over the ground-truth edema voxels, at three decoder levels for cases 0141 and 0091. In these two cases, the baseline DynUNet's finer decoder levels highlight mostly the skull and background, while the Row 4 model (+DS +att +FP) focuses on the edema at every level. Green outline: ground-truth edema.",
+      "The study's pipeline: a fixed 180/25/52 patient split, a five-seed benchmark of six architectures, a DynUNet extended with deep supervision, attention gates and a false-positive penalty, and evaluation under three Dice scoring rules with explainability analyses. Scan images in the diagram are schematic.",
   },
   evidence: [resume],
   // Position on the homepage (1–4). Remove this line to unfeature.
