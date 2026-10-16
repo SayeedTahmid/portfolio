@@ -16,6 +16,14 @@ const project: Project = {
     "Preprocessed and quality-checked two glioma cohorts totaling 118 patients (EBRAINS, 27; LUMIERE, 91), and identified reliability failures in LUMIERE's automated segmentations.",
   ],
   stack: ["Python", "NumPy", "nibabel", "PyTorch", "pytest"],
+  image: {
+    src: "/projects/sailor-longitudinal-mri/proposed-framework.png",
+    width: 1536,
+    height: 1024,
+    alt: "Planning diagram titled Treatment-Aware Longitudinal Neuro-Oncology Framework with Residual Diffusion. It proposes taking one patient's MRI history (three or more time points), extracting 3D features with a pretrained 3D foundation-model encoder, encoding the sequence with a temporal transformer and the treatment records with a treatment encoder, fusing them by cross-attention, and conditioning a residual diffusion model that predicts the change from the latest scan to produce the future MRI and tumour mask. Side panels list candidate models, evaluation metrics, baselines (persistence, a TaDiff reproduction and 3D-GlioPREDICT), ablations, the data (SAILOR on EBRAINS, 27 patients, about 270 sessions), a hardware estimate and the expected outcomes.",
+    caption:
+      "Proposed framework for the next stage: planned, not yet built or evaluated. The hardware estimate and expected outcomes in the diagram are planning assumptions, not results.",
+  },
   links: [
     {
       kind: "repo",
