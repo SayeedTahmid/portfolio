@@ -17,8 +17,9 @@ install) or on your computer.
 | **Replace** | Delete the old file and add the new one with the same name                                 |
 | **Remove**  | Delete `content/profile-photo.*`; the homepage and About page close up around it           |
 
-Any shape works. It is shown in a 4:5 portrait frame, filled from the centre and biased
-towards the top so your face stays in view. A JPEG around 1,000 pixels wide is ideal; keep
+Any shape works. Portrait (4:5) to square photos are shown whole, in a frame of their own
+shape; taller or wider photos are cropped to fit, from the centre and biased towards the top
+so your face stays in view. A JPEG around 1,000 pixels wide is ideal; keep
 it under 5 MB. Only one photo may exist at a time.
 
 ## Homepage hero image
