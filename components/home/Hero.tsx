@@ -2,7 +2,9 @@ import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { site } from "@/content/site";
+import { cx } from "@/lib/cx";
 import { ContourFigure } from "./ContourFigure";
+import { hasHeroImage, HeroImage } from "./HeroImage";
 
 export function Hero() {
   return (
@@ -10,7 +12,15 @@ export function Hero() {
       aria-labelledby="hero-heading"
       className="pt-14 pb-20 sm:pt-24 sm:pb-28"
     >
-      <Container className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <Container
+        className={cx(
+          "grid items-center gap-12",
+          // A hero image gets a wider column than the contour figure.
+          hasHeroImage
+            ? "lg:grid-cols-[minmax(0,1fr)_24rem] xl:grid-cols-[minmax(0,1fr)_26rem]"
+            : "lg:grid-cols-[minmax(0,1fr)_20rem] xl:grid-cols-[minmax(0,1fr)_24rem]",
+        )}
+      >
         <div>
           <p className="font-mono text-sm text-fg-muted">{site.role}</p>
           <h1
@@ -40,7 +50,12 @@ export function Hero() {
             </ButtonLink>
           </div>
         </div>
-        <ContourFigure className="hidden w-full lg:block" />
+        {hasHeroImage ? (
+          // Shown on every screen size: beside the text on desktop, below it otherwise.
+          <HeroImage className="w-full max-w-2xl lg:max-w-none" />
+        ) : (
+          <ContourFigure className="hidden w-full lg:block" />
+        )}
       </Container>
     </section>
   );

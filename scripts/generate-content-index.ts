@@ -4,15 +4,18 @@
  *   content/projects/<slug>/project.ts   one folder per project (folders starting
  *                                        with "_" are ignored, e.g. _template)
  *   content/profile-photo.{jpg,jpeg,png,webp,avif}   optional profile photo
+ *   content/hero-image.{jpg,jpeg,png,webp,avif}      optional homepage hero image
+ *                                                    (without it, the contour figure shows)
  *
- * and writes two small modules the site imports:
+ * and writes small modules the site imports:
  *
  *   content/projects/index.generated.ts
  *   content/profile-photo.generated.ts
+ *   content/hero-image.generated.ts
  *
  * Runs automatically before `npm install` finishes, `npm run dev`, `npm run build`,
  * `npm run typecheck`, `npm run lint` and the content checks, so it never needs to
- * be run by hand. Both outputs are git-ignored.
+ * be run by hand. All outputs are git-ignored.
  */
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -70,27 +73,37 @@ const projectIndex = [
 ].join("\n");
 writeIfChanged(join(projectsDir, "index.generated.ts"), projectIndex);
 
-// Profile photo -------------------------------------------------------------
-const photoNames = ["jpg", "jpeg", "png", "webp", "avif"]
-  .map((ext) => `profile-photo.${ext}`)
-  .filter((name) => existsSync(join(contentDir, name)));
-if (photoNames.length > 1) {
-  console.error(
-    `content/: found more than one profile photo (${photoNames.join(", ")}). Keep one.`,
-  );
-  process.exit(1);
+// Optional images -------------------------------------------------------------
+/**
+ * Finds content/<basename>.<ext> (at most one) and writes
+ * content/<basename>.generated.ts exporting it as `exportName`, or null when absent.
+ */
+function optionalImage(basename: string, exportName: string, label: string) {
+  const found = ["jpg", "jpeg", "png", "webp", "avif"]
+    .map((ext) => `${basename}.${ext}`)
+    .filter((name) => existsSync(join(contentDir, name)));
+  if (found.length > 1) {
+    console.error(
+      `content/: found more than one ${label} (${found.join(", ")}). Keep one.`,
+    );
+    process.exit(1);
+  }
+  const file = found[0];
+  const source = [
+    ...banner,
+    'import type { StaticImageData } from "next/image";',
+    ...(file ? [`import image from "./${file}";`] : []),
+    "",
+    `export const ${exportName}: StaticImageData | null = ${file ? "image" : "null"};`,
+    "",
+  ].join("\n");
+  writeIfChanged(join(contentDir, `${basename}.generated.ts`), source);
+  return file ?? "none";
 }
-const photo = photoNames[0];
-const photoModule = [
-  ...banner,
-  'import type { StaticImageData } from "next/image";',
-  ...(photo ? [`import photo from "./${photo}";`] : []),
-  "",
-  `export const profilePhoto: StaticImageData | null = ${photo ? "photo" : "null"};`,
-  "",
-].join("\n");
-writeIfChanged(join(contentDir, "profile-photo.generated.ts"), photoModule);
+
+const photo = optionalImage("profile-photo", "profilePhoto", "profile photo");
+const hero = optionalImage("hero-image", "heroImage", "hero image");
 
 console.log(
-  `content index: ${folders.length} project(s); profile photo: ${photo ?? "none"}`,
+  `content index: ${folders.length} project(s); profile photo: ${photo}; hero image: ${hero}`,
 );

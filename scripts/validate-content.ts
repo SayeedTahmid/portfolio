@@ -9,6 +9,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { projects } from "../content/projects.ts";
+import { site } from "../content/site.ts";
 import {
   projectFolders,
   projectModules,
@@ -169,18 +170,27 @@ if (existsSync(imagesRoot)) {
   }
 }
 
-// Profile photo: optional, but keep it a reasonable size.
-for (const ext of ["jpg", "jpeg", "png", "webp", "avif"]) {
-  const photo = join(
-    import.meta.dirname,
-    "..",
-    "content",
-    `profile-photo.${ext}`,
-  );
-  if (existsSync(photo) && statSync(photo).size > 5 * 1024 * 1024) {
-    warnings.push(
-      `content/profile-photo.${ext} is over 5 MB; a 1000-pixel-wide JPEG is plenty`,
+// Profile photo and hero image: optional, but keep them a reasonable size.
+for (const [basename, advice] of [
+  ["profile-photo", "a 1000-pixel-wide JPEG is plenty"],
+  ["hero-image", "a 1600-pixel-wide JPEG is plenty"],
+] as const) {
+  for (const ext of ["jpg", "jpeg", "png", "webp", "avif"]) {
+    const file = join(
+      import.meta.dirname,
+      "..",
+      "content",
+      `${basename}.${ext}`,
     );
+    if (!existsSync(file)) continue;
+    if (statSync(file).size > 5 * 1024 * 1024) {
+      warnings.push(`content/${basename}.${ext} is over 5 MB; ${advice}`);
+    }
+    if (basename === "hero-image" && site.heroImageAlt.trim().length < 20) {
+      errors.push(
+        `content/${basename}.${ext} needs a description: set heroImageAlt in content/site.ts`,
+      );
+    }
   }
 }
 

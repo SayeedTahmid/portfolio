@@ -27,6 +27,13 @@ export const site = {
     label: "Résumé (PDF)",
   },
   /**
+   * Description of content/hero-image.* for screen readers and search engines.
+   * Update it whenever you replace the image. Unused when there is no hero image
+   * (the homepage then shows the contour figure).
+   */
+  heroImageAlt:
+    "Illustration of a developer working at a desk at night, with code and a brain scan on the monitors, football memorabilia on the wall and the words Code, Build, Play, Repeat.",
+  /**
    * Show a labelled "no screenshot yet" panel on project cards that have no image.
    * Set to false to hide the panels before launch if screenshots are still missing.
    */

@@ -26,6 +26,7 @@ Then confirm the personal details below are final.
 | Email, GitHub, LinkedIn                                         | `content/site.ts`                       | `email`, `links.github`, `links.linkedin`                        |
 | Résumé PDF                                                      | `public/syed-tahmid-manzoor-resume.pdf` | replace the file; the link is `site.resume.href`                 |
 | Profile photo                                                   | `content/profile-photo.jpg`             | add, replace or delete the file (see `docs/MANAGING-CONTENT.md`) |
+| Homepage hero image (contour figure when absent)                | `content/hero-image.jpg`                | add, replace or delete the file; description in `heroImageAlt`   |
 | About text                                                      | `content/profile.ts`                    | `aboutPreview`, `aboutFull`                                      |
 | Education, activities                                           | `content/profile.ts`                    | `education`, `activities`                                        |
 | Skills                                                          | `content/skills.ts`                     | `skillGroups`                                                    |

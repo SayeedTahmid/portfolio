@@ -1,4 +1,4 @@
-# Managing your photo and projects
+# Managing your photos and projects
 
 Everything is file-based: **add a file or folder and it appears on the site; delete it
 and it disappears.** No list to update and no code to change. After you push, Vercel
@@ -20,6 +20,18 @@ install) or on your computer.
 Any shape works. It is shown in a 4:5 portrait frame, filled from the centre and biased
 towards the top so your face stays in view. A JPEG around 1,000 pixels wide is ideal; keep
 it under 5 MB. Only one photo may exist at a time.
+
+## Homepage hero image
+
+| To          | Do this                                                                                                                |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Add**     | Put an image named `hero-image.jpg` (or `.jpeg`, `.png`, `.webp`, `.avif`) in `content/`                               |
+| **Replace** | Delete the old file, add the new one with the same name, and update `heroImageAlt` in `content/site.ts` to describe it |
+| **Remove**  | Delete `content/hero-image.*`; the animated contour figure comes back                                                  |
+
+The image keeps its own shape. On desktop it sits beside the headline; on phones and
+tablets it appears below the buttons. Around 1,500 pixels wide is ideal; keep it under
+5 MB. `heroImageAlt` must describe what the image shows, including any words in it.
 
 ## Projects
 
@@ -98,9 +110,9 @@ git push
 
 ## How it works
 
-`scripts/generate-content-index.ts` scans `content/projects/` and `content/` and writes two
-small files the site imports (`content/projects/index.generated.ts` and
-`content/profile-photo.generated.ts`). It runs automatically on `npm install`, `npm run dev`,
+`scripts/generate-content-index.ts` scans `content/projects/` and `content/` and writes three
+small files the site imports (`content/projects/index.generated.ts`,
+`content/profile-photo.generated.ts` and `content/hero-image.generated.ts`). It runs automatically on `npm install`, `npm run dev`,
 `npm run build` and every check, including on Vercel, so you never run it yourself.
-Both files are git-ignored. The tests are generated from the same content, so they keep
+They are git-ignored. The tests are generated from the same content, so they keep
 working as projects come and go.

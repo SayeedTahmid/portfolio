@@ -175,6 +175,10 @@ test.describe("motion", () => {
       const context = await browser.newContext({ reducedMotion });
       const page = await context.newPage();
       await page.goto("/");
+      if ((await page.locator(".contour-draw").count()) === 0) {
+        await context.close();
+        test.skip(true, "content/hero-image.* replaces the contour figure");
+      }
       const name = await page
         .locator(".contour-draw")
         .first()
