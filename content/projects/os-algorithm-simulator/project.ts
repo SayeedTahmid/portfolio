@@ -22,6 +22,14 @@ const project: Project = {
     },
     { kind: "repo", href: github("OS-AlgoSim"), label: "Source code" },
   ],
+  image: {
+    src: "/projects/os-algorithm-simulator/dashboard.png",
+    width: 1878,
+    height: 976,
+    alt: "The OS Simulator dashboard in dark mode: a sidebar with Dashboard, CPU Scheduling, Memory Management, Deadlock, Performance Analyzer and About; counters for 12 algorithms in total, 6 CPU, 4 memory and 2 deadlock algorithms; a welcome banner with a Get Started button; and module cards for CPU scheduling (FCFS, SJF, Priority, Round Robin), memory management, deadlock detection with Banker's algorithm, and performance analysis.",
+    caption:
+      "The dashboard: algorithm counts and the four modules, CPU scheduling, memory management, deadlock detection and performance analysis.",
+  },
   evidence: [
     resume,
     { label: "OS-AlgoSim repository", href: github("OS-AlgoSim") },
