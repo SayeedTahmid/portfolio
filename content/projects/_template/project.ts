@@ -18,7 +18,7 @@ const project: Project = {
   summary:
     "A short, specific description of what the project does and who it is for.",
   category: "software", // "ml-research" | "software" | "embedded"
-  status: "completed", // "completed" | "ongoing"
+  status: "completed", // "completed" | "ongoing" | "paused" (shown as "On hold")
   year: 2026,
 
   // Optional details (delete the ones you don't need) ------------------------

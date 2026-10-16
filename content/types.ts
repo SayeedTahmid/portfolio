@@ -22,11 +22,13 @@ export const categoryLabels: Record<ProjectCategory, string> = {
   embedded: "Embedded systems",
 };
 
-export type ProjectStatus = "completed" | "ongoing";
+/** "paused": stopped for now, with a plan to resume (shown as "On hold"). */
+export type ProjectStatus = "completed" | "ongoing" | "paused";
 
 export const statusLabels: Record<ProjectStatus, string> = {
   completed: "Completed",
   ongoing: "Ongoing",
+  paused: "On hold",
 };
 
 /** Where a claim can be checked. `href` is absent for documents that aren't public. */
